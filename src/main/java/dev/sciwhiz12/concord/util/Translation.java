@@ -131,12 +131,12 @@ public interface Translation {
 
     private boolean translateEagerly(CommandSourceStack source) {
         return !ConcordConfig.LAZY_TRANSLATIONS.get()
-                || (source.getEntity() instanceof ServerPlayer player && !player.getData(ConcordFeatures.ATTACHMENT).isEmpty());
+                || (source.getEntity() instanceof ServerPlayer player && ConcordFeatures.getOrNull(player) != null);
     }
 
     private boolean translateEagerly(@Nullable Entity sourceEntity) {
         return !ConcordConfig.LAZY_TRANSLATIONS.get()
-                || (sourceEntity instanceof ServerPlayer player && !player.getData(ConcordFeatures.ATTACHMENT).isEmpty());
+                || (sourceEntity instanceof ServerPlayer player && ConcordFeatures.getOrNull(player) != null);
     }
 
     /**

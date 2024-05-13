@@ -22,8 +22,14 @@
 
 package dev.sciwhiz12.concord.network;
 
+import com.google.common.collect.Maps;
 import dev.sciwhiz12.concord.Concord;
+import dev.sciwhiz12.concord.features.ConcordFeatures;
+import io.netty.buffer.ByteBuf;
+import io.netty.util.AttributeKey;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -32,29 +38,26 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import java.util.Map;
 
 public record FeaturesPayload(Map<String, ArtifactVersion> features) implements CustomPacketPayload {
-    public static final ResourceLocation ID = new ResourceLocation(Concord.MODID, "features");
+    public static final Type<FeaturesPayload> TYPE = new Type<>(new ResourceLocation(Concord.MODID, "features"));
+    private static final StreamCodec<ByteBuf, ArtifactVersion> ARTIFACT_VERSION_CODEC = ByteBufCodecs.STRING_UTF8.map(
+            DefaultArtifactVersion::new,
+            ArtifactVersion::toString
+    );
+    public static final StreamCodec<FriendlyByteBuf, FeaturesPayload> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.map(
+                    Maps::newHashMapWithExpectedSize,
+                    ByteBufCodecs.STRING_UTF8,
+                    ARTIFACT_VERSION_CODEC
+            ),
+            FeaturesPayload::features,
+            FeaturesPayload::new);
 
     public FeaturesPayload {
         features = Map.copyOf(features);
     }
 
     @Override
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeMap(features,
-                FriendlyByteBuf::writeUtf,
-                (buf, ver) -> buf.writeUtf(ver.toString())
-        );
-    }
-
-    public static FeaturesPayload read(FriendlyByteBuf buffer) {
-        return new FeaturesPayload(buffer.readMap(
-                FriendlyByteBuf::readUtf,
-                buf -> new DefaultArtifactVersion(buf.readUtf())
-        ));
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

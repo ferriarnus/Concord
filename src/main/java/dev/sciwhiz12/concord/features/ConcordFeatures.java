@@ -23,42 +23,19 @@
 package dev.sciwhiz12.concord.features;
 
 import dev.sciwhiz12.concord.Concord;
-import net.minecraft.nbt.Tag;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
-import net.neoforged.neoforge.attachment.IAttachmentSerializer;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import io.netty.util.AttributeKey;
+import net.minecraft.server.level.ServerPlayer;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.Optional;
 
 public class ConcordFeatures {
-    private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
-            DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Concord.MODID);
-
-    public static final Supplier<AttachmentType<ConcordFeatures>> ATTACHMENT = ATTACHMENT_TYPES.register(
-            "features", () -> AttachmentType.builder(holder -> new ConcordFeatures(Map.of()))
-                    .serialize(new IAttachmentSerializer<>() {
-                        @Override
-                        public @Nullable Tag write(ConcordFeatures attachment) {
-                            return null;
-                        }
-
-                        @Override
-                        public ConcordFeatures read(IAttachmentHolder holder, Tag tag) {
-                            throw new UnsupportedOperationException("Attempted to deserialize attachment that can never be serialized");
-                        }
-                    })
-                    .copyHandler((holder, attachment) -> new ConcordFeatures(attachment.features))
-                    .copyOnDeath()
-                    .build()
-    );
+    public static final AttributeKey<ConcordFeatures> CHANNEL_ATTRIBUTE_KEY = AttributeKey.newInstance(Concord.MODID +":features");
+    public static final ConcordFeatures EMPTY =new ConcordFeatures(Map.of());
 
     private final Map<String, ArtifactVersion> features;
 
@@ -104,8 +81,13 @@ public class ConcordFeatures {
     public int hashCode() {
         return Objects.hash(features);
     }
-
-    public static void register(IEventBus modBus) {
-        ATTACHMENT_TYPES.register(modBus);
+    
+    @Nullable
+    public static ConcordFeatures getOrNull(ServerPlayer player) {
+        return player.connection.getConnection().channel().attr(CHANNEL_ATTRIBUTE_KEY).get();
+    }
+    
+    public static ConcordFeatures getOrEmpty(ServerPlayer player) {
+        return Optional.ofNullable(getOrNull(player)).orElse(EMPTY);
     }
 }

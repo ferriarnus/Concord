@@ -80,7 +80,7 @@ public final class TranslationUtil {
     }
 
     public static MutableComponent createTranslation(@Nullable ServerPlayer entity, String translationKey, Object... args) {
-        return createTranslation(!ConcordConfig.LAZY_TRANSLATIONS.get() || (entity != null && !entity.getData(ConcordFeatures.ATTACHMENT).isEmpty()),
+        return createTranslation(!ConcordConfig.LAZY_TRANSLATIONS.get() || (entity != null && ConcordFeatures.getOrNull(entity) != null),
                 translationKey, args);
     }
 

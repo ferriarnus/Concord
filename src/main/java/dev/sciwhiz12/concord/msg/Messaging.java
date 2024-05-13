@@ -194,7 +194,7 @@ public class Messaging {
     private static final DefaultArtifactVersion ZERO_VERSION = new DefaultArtifactVersion("0.0.0");
 
     static ArtifactVersion getFeatureVersionWithDefault(ServerPlayer player, FeatureVersion feature) {
-        final @Nullable ArtifactVersion version = player.getData(ConcordFeatures.ATTACHMENT).getFeature(feature);
+        final @Nullable ArtifactVersion version = ConcordFeatures.getOrEmpty(player).getFeature(feature);
         if (version == null) return ZERO_VERSION;
         return version;
     }

@@ -64,7 +64,6 @@ public class Concord {
 //        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class,
 //                () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (ver, remote) -> true));
         ConcordNetwork.register(modBus);
-        ConcordFeatures.register(modBus);
         ConcordConfig.register(container);
 
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onServerStarting);

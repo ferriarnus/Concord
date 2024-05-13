@@ -34,7 +34,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.ServerChatEvent;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import java.util.Objects;
 
@@ -69,8 +69,7 @@ public class MessageListener extends ListenerAdapter {
     }
 
     @SubscribeEvent
-    void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
+    void onServerTickPost(ServerTickEvent.Post event) {
         bot.messaging().processMessages();
     }
 

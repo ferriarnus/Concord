@@ -191,7 +191,7 @@ final class FormattingUtilities {
                 // Make sure that formatting at the end of messages, or lone formatting, is dealt with.
                 final String formatString = firstSpacePosition == -1 ? part.substring(1) : part.substring(1, firstSpacePosition);
                 // Use TextColor's built-in parsing to do the heavy lifting.
-                final TextColor color = TextColor.parseColor(formatString).get().left().orElse(TextColor.fromLegacyFormat(WHITE));
+                final TextColor color = TextColor.parseColor(formatString).result().orElse(TextColor.fromLegacyFormat(WHITE));
                 // Assign the TextColor into a Style instance so that we can use it with a TextComponent.
                 final Style formatting = Style.EMPTY.withColor(color);
 
