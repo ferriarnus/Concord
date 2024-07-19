@@ -7,7 +7,7 @@ plugins {
 }
 
 versions {
-    stripPattern = /^\d+\.\d+\.[\dx]+-/
+    stripPattern = /^\d+\.\d+(?:\.[\dx]+)?-/
 }
 version = versions.version
 println "Mod version: $version"
