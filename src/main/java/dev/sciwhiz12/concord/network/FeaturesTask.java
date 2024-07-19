@@ -29,6 +29,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.configuration.ServerConfigurationPacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.configuration.ICustomConfigurationTask;
+import net.neoforged.neoforge.network.registration.NetworkRegistry;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 
 import java.util.Arrays;
@@ -40,12 +41,14 @@ public record FeaturesTask(ServerConfigurationPacketListener listener) implement
 
     @Override
     public void run(Consumer<CustomPacketPayload> sender) {
-        final Map<String, ArtifactVersion> features = Arrays.stream(FeatureVersion.values())
-                .map(f -> Map.entry(f.featureName(), f.currentVersion()))
-                .collect(Util.toMap());
-
-        // Send the features payload, and finish the configuration task immediately
-        sender.accept(new FeaturesPayload(features));
+        if (listener.hasChannel(FeaturesPayload.TYPE)) {
+            // Send the features payload if it was negotiated
+            final Map<String, ArtifactVersion> features = Arrays.stream(FeatureVersion.values())
+                    .map(f -> Map.entry(f.featureName(), f.currentVersion()))
+                    .collect(Util.toMap());
+            sender.accept(new FeaturesPayload(features));
+        }
+        // Always finish the configuration task
         listener.finishCurrentTask(TYPE);
     }
 
