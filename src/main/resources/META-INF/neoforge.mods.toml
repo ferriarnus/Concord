@@ -29,13 +29,13 @@ license = "MIT License"
 [[dependencies.concord]]
     modId = "neoforge"
     type = "required"
-    versionRange = "[20.6.62-beta,20.7.0)"
+    versionRange = "[21.0.109-beta,21.1.0)"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.concord]]
     modId = "minecraft"
     type = "required"
-    versionRange = "[1.20.6,1.20.7)"
+    versionRange = "[1.21,1.21.1)"
     ordering = "NONE"
     side = "BOTH"

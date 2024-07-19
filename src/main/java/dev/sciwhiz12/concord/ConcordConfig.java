@@ -74,7 +74,7 @@ public class ConcordConfig {
     public static final ModConfigSpec.BooleanValue COMMAND_EMOTE;
 
     public static void register(ModContainer container) {
-        container.addConfig(new ModConfig(ModConfig.Type.COMMON, CONFIG_SPEC, container));
+        container.registerConfig(ModConfig.Type.COMMON, CONFIG_SPEC);
     }
 
     static {

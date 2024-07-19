@@ -1,7 +1,7 @@
 plugins {
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.120'
-    id 'io.github.goooler.shadow' version '8.1.7'
+    id 'net.neoforged.gradle.userdev' version '7.0.155'
+    id 'io.github.goooler.shadow' version '8.1.8'
     id 'org.cadixdev.licenser' version '0.6.1'
     id 'dev.sciwhiz12.gradle.simplversion' version '0.2.0'
 }
@@ -18,6 +18,12 @@ sourceSets {
         srcDirs += data.resources.srcDirs
         exclude '.cache/'
     }
+}
+
+java {
+    archivesBaseName = "${project.name}-${mc_version}"
+    toolchain.languageVersion = JavaLanguageVersion.of(java_version)
+    withSourcesJar()
 }
 
 print "Java: ${System.getProperty('java.version')}"
@@ -81,12 +87,6 @@ dependencies {
     }
 
     dataImplementation sourceSets.main.output
-}
-
-java {
-    archivesBaseName = "${project.name}-${mc_version}"
-    toolchain.languageVersion = JavaLanguageVersion.of(java_version)
-    withSourcesJar()
 }
 
 license {

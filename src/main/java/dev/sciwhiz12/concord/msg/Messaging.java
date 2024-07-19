@@ -57,7 +57,7 @@ import static dev.sciwhiz12.concord.Concord.LOGGER;
 import static dev.sciwhiz12.concord.Concord.MODID;
 
 public class Messaging {
-    public static final ResourceLocation ICONS_FONT = new ResourceLocation(MODID, "icons");
+    public static final ResourceLocation ICONS_FONT = ResourceLocation.fromNamespaceAndPath(MODID, "icons");
     public static final TextColor CROWN_COLOR = TextColor.fromRgb(0xfaa61a);
 
     private final ChatBot bot;

@@ -38,7 +38,7 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import java.util.Map;
 
 public record FeaturesPayload(Map<String, ArtifactVersion> features) implements CustomPacketPayload {
-    public static final Type<FeaturesPayload> TYPE = new Type<>(new ResourceLocation(Concord.MODID, "features"));
+    public static final Type<FeaturesPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Concord.MODID, "features"));
     private static final StreamCodec<ByteBuf, ArtifactVersion> ARTIFACT_VERSION_CODEC = ByteBufCodecs.STRING_UTF8.map(
             DefaultArtifactVersion::new,
             ArtifactVersion::toString

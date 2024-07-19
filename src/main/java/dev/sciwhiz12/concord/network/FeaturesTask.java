@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public record FeaturesTask(ServerConfigurationPacketListener listener) implements ICustomConfigurationTask {
-    public static final Type TYPE = new Type(new ResourceLocation(Concord.MODID, "features"));
+    public static final Type TYPE = new Type(ResourceLocation.fromNamespaceAndPath(Concord.MODID, "features"));
 
     @Override
     public void run(Consumer<CustomPacketPayload> sender) {
