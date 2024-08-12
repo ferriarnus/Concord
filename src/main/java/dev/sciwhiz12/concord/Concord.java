@@ -25,8 +25,8 @@ package dev.sciwhiz12.concord;
 import com.google.common.base.Strings;
 import com.mojang.logging.LogUtils;
 import dev.sciwhiz12.concord.command.ConcordCommand;
+import dev.sciwhiz12.concord.command.ConcordDiscordCommand;
 import dev.sciwhiz12.concord.command.ReportCommand;
-import dev.sciwhiz12.concord.features.ConcordFeatures;
 import dev.sciwhiz12.concord.network.ConcordNetwork;
 import dev.sciwhiz12.concord.util.Messages;
 import net.dv8tion.jda.api.JDA;
@@ -142,6 +142,7 @@ public class Concord {
         try {
             final JDA jda = jdaBuilder.build();
             BOT = new ChatBot(jda, server);
+            ConcordDiscordCommand.postInit();
         } catch (InvalidTokenException e) {
             LOGGER.error("Error while trying to login to Discord; integration will not be enabled.", e);
         }

@@ -23,6 +23,8 @@
 package dev.sciwhiz12.concord;
 
 import com.google.common.collect.Sets;
+import dev.sciwhiz12.concord.command.ConcordDiscordCommand;
+import dev.sciwhiz12.concord.command.discord.CommandDispatcher;
 import dev.sciwhiz12.concord.msg.*;
 import dev.sciwhiz12.concord.msg.chat.ChatForwarder;
 import dev.sciwhiz12.concord.msg.chat.DefaultChatForwarder;
@@ -67,6 +69,7 @@ public class ChatBot extends ListenerAdapter {
     private final StatusListener statusListener;
     private final SentMessageMemory sentMessageMemory;
     private ChatForwarder chatForwarder;
+    private final CommandDispatcher dispatcher;
 
     ChatBot(JDA discord, MinecraftServer server) {
         this.discord = discord;
@@ -79,6 +82,12 @@ public class ChatBot extends ListenerAdapter {
         sentMessageMemory = new SentMessageMemory(this);
         chatForwarder = new DefaultChatForwarder(this);
 
+        // Initialize Discord-side commands
+        dispatcher = new CommandDispatcher();
+        discord.addEventListener(dispatcher);
+
+        ConcordDiscordCommand.initialize(dispatcher);
+
         // Prevent any mentions not explicitly specified
         MessageRequest.setDefaultMentions(Collections.emptySet());
     }
@@ -90,6 +99,8 @@ public class ChatBot extends ListenerAdapter {
     public MinecraftServer getServer() {
         return server;
     }
+
+    public CommandDispatcher getDispatcher() { return dispatcher; }
 
     @Override
     public void onReady(ReadyEvent event) {
