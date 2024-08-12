@@ -1,3 +1,25 @@
+/*
+ * Concord - Copyright (c) 2020 SciWhiz12
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package dev.sciwhiz12.concord.command;
 
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
@@ -8,6 +30,7 @@ import dev.sciwhiz12.concord.command.discord.KickCommand;
 import dev.sciwhiz12.concord.command.discord.WhitelistCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -37,7 +60,7 @@ public class ConcordDiscordCommand {
     private static JDA bot;
     private static MinecraftServer server;
 
-    private static void tpsCommand(SlashCommandEvent tpsEvent) {
+    private static void tpsCommand(SlashCommandInteractionEvent tpsEvent) {
         double meanTickTime = mean(server.getTickTimesNanos()) * 1.0E-6D;
         double meanTPS = Math.min(1000.0/meanTickTime, 20);
 
@@ -73,7 +96,7 @@ public class ConcordDiscordCommand {
         return sum / values.length;
     }
 
-    private static void helpCommand(SlashCommandEvent helpEvent) {
+    private static void helpCommand(SlashCommandInteractionEvent helpEvent) {
         var dispatcher = Concord.BOT.getDispatcher();
         var commands = dispatcher.getCommands();
 
