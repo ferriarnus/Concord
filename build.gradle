@@ -74,10 +74,22 @@ repositories {
         name 'm2-dv8tion'
         url 'https://m2.dv8tion.net/releases'
     }
+    maven {
+        name 'jda-chewtils'
+        url 'https://m2.chew.pro/releases'
+    }
+    maven {
+        name 'jitpack'
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
+    library(group: 'com.github.matyrobbrt', name: 'JDA-Chewtils', version: jda_chewtils_version){
+        exclude module: 'annotations'
+
+    }
 
     library(group: 'net.dv8tion', name: 'JDA', version: jda_version) {
         exclude module: 'opus-java'
@@ -149,7 +161,9 @@ tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
     relocate 'javax.annotation'
     relocate 'com.fasterxml.jackson'
 
+    relocate 'pw.chew.jda-chewtils'
     relocate 'net.dv8tion.jda'
+
     relocate 'club.minnced.discord.webhook'
     exclude 'META-INF/maven/**'
     exclude 'META-INF/proguard/**'
